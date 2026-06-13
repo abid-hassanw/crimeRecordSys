@@ -170,7 +170,6 @@ public class investigationrecordsystem {
             System.out.println("Nothing to Undo");
     }
 
-    // Main Method
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
