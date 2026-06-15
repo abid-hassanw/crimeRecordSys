@@ -53,4 +53,86 @@ public class investigationrecordsystemgui extends JFrame {
         suspectField = new JTextField();
         panel.add(suspectField);
 
-    }}
+        panel.add(new JLabel("Status:"));
+        statusField = new JTextField();
+        panel.add(statusField);
+
+        JButton addBtn = new JButton("Add Record");
+        JButton searchBtn = new JButton("Search Record");
+
+        panel.add(addBtn);
+        panel.add(searchBtn);
+
+        add(panel, BorderLayout.NORTH);
+
+        outputArea = new JTextArea();
+        outputArea.setEditable(false);
+
+        add(new JScrollPane(outputArea), BorderLayout.CENTER);
+
+        addBtn.addActionListener(e -> addRecord());
+
+        searchBtn.addActionListener(e -> searchRecord());
+
+        setVisible(true);
+    }
+
+    private void addRecord() {
+
+        try {
+
+            int id = Integer.parseInt(idField.getText());
+
+            if (crimeMap.containsKey(id)) {
+                JOptionPane.showMessageDialog(this, "Crime ID already exists!");
+                return;
+            }
+
+            String type = typeField.getText();
+            String suspect = suspectField.getText();
+            String status = statusField.getText();
+
+            CrimeRecord record =
+                    new CrimeRecord(id, type, suspect, status);
+
+            crimeMap.put(id, record);
+
+            outputArea.append("Added: " + record + "\n");
+
+            idField.setText("");
+            typeField.setText("");
+            suspectField.setText("");
+            statusField.setText("");
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Invalid Input!");
+        }
+    }
+
+    private void searchRecord() {
+
+        try {
+
+            int id = Integer.parseInt(
+                    JOptionPane.showInputDialog("Enter Crime ID"));
+
+            CrimeRecord record = crimeMap.get(id);
+
+            if (record != null)
+                outputArea.append("Found: " + record + "\n");
+            else
+                outputArea.append("Record Not Found\n");
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Invalid ID!");
+        }
+    }
+
+    public static void main(String[] args) {
+
+        SwingUtilities.invokeLater(() ->
+                new investigationrecordsystemgui());
+    }
+}
+
+
